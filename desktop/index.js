@@ -1,13 +1,25 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
+const dns = require('dns')
 
-const mqttBroker = require('./broker/broker')
-mqttBroker(1833)
+const mqttBroker = require('./messaging/broker')
+const mqttSubscriber = require('./messaging/subscriber')
 
 let win
+let ipAddress
+let brokerPort = 1883
+let channel = 'file-transfer'
 
-function createWindow() {
+function startUp() {
+    // Start the MQTT Broker
+    mqttBroker(brokerPort)
+    dns.lookup(require('os').hostname(), function (err, add, fam) {
+        ipAddress = add
+        console.log('IP Address:', ipAddress)
+        mqttSubscriber(ipAddress, brokerPort, channel)
+    })
+
     // Create the browser window.
     win = new BrowserWindow({ width: 800, height: 600 })
 
@@ -30,7 +42,7 @@ function createWindow() {
     })
 }
 
-app.on('ready', createWindow)
+app.on('ready', startUp)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -40,6 +52,12 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (win === null) {
-        createWindow()
+        startUp()
     }
+})
+
+
+dns.lookup(require('os').hostname(), function (err, add, fam) {
+    ipAddress = add
+    console.log('IP Address:', add)
 })
