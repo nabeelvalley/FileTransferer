@@ -12,10 +12,7 @@ client.on('connect', function () {
 })
 
 client.on('message', function (topic, message) {
-    context = message
-
-    const buffer = new Buffer(context)
-
+    const buffer = Buffer.from(message)
     console.log(buffer)
 
     const writeStream = fs.createWriteStream(filePath)

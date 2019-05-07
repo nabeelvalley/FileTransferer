@@ -8,11 +8,15 @@ const fileName = ''
 
 const filePath = path.join(__dirname, '../../.transfer/send/image.jpg')
 
+const ip = process.argv[2] || 'localhost'
+const port = process.argv[3] || 1883
+const channel = process.argv[4] || 'counter'
+
 const fileContents = fs.readFileSync(filePath)
 
-var client = mqtt.connect('mqtt://localhost:1883')
+var client = mqtt.connect(`mqtt://${ip}:${port}`)
 
 client.on('connect', function () {
     console.log('Send file')
-    client.publish('counter', fileContents)
+    client.publish(channel, fileContents)
 })

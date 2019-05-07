@@ -16,7 +16,6 @@ function startUp() {
     mqttBroker(brokerPort)
     dns.lookup(require('os').hostname(), function (err, add, fam) {
         ipAddress = add
-        console.log('IP Address:', ipAddress)
         mqttSubscriber(ipAddress, brokerPort, channel)
     })
 
@@ -54,10 +53,4 @@ app.on('activate', () => {
     if (win === null) {
         startUp()
     }
-})
-
-
-dns.lookup(require('os').hostname(), function (err, add, fam) {
-    ipAddress = add
-    console.log('IP Address:', add)
 })

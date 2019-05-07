@@ -2,7 +2,8 @@
   "scripts": {
     "start:sub": "node app/sub.js",
     "start:pub": "node app/pub.js",
-    "start:broker": "node app/broker.js"
+    "start:broker": "node app/broker.js",
+    "test:send": "node app/fileSender.js 192.168.99.1 1883 file-transfer"
   },
   "dependencies": {
     "mosca": "^2.8.3"
