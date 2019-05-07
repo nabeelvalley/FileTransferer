@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start:sub": "node app/sub.js",
+    "start:pub": "node app/pub.js",
+    "start:broker": "node app/broker.js"
+  },
+  "dependencies": {
+    "mosca": "^2.8.3"
+  }
+}
