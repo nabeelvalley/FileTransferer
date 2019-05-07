@@ -2,6 +2,9 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 
+const mqttBroker = require('./broker/broker')
+mqttBroker(1833)
+
 let win
 
 function createWindow() {
