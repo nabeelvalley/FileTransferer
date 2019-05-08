@@ -12,6 +12,34 @@ The desktop app makes use of an Electron application running a Mocca MQTT Broker
 
 This is an Ionic app making use of a Browserified version of the MQTT.js library that connects to the Broker hosted on the desktop application
 
+## Running Dev
+
+0. Clone the repo
+1. Install dependencies **Node.js must be installed*
+
+```
+cd desktop
+npm i
+
+cd ../mobile
+npm i
+```
+
+2. Run the applications either with
+
+```
+cd desktop
+npm start
+
+cd ../mobile
+npm start
+```
+
+Or using the Visual Studio Debug configurations:
+- Debug Desktop
+- Debug Mobile
+
+
 ## To Do
 
 A lot still needs to be done before the application is actually functional
