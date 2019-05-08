@@ -10,7 +10,7 @@ const filePath = path.join(__dirname, '../../.transfer/send/image.jpg')
 
 const ip = process.argv[2] || 'localhost'
 const port = process.argv[3] || 1883
-const channel = process.argv[4] || 'counter'
+const channel = process.argv[4] || 'file-transfer'
 
 const fileContents = fs.readFileSync(filePath)
 

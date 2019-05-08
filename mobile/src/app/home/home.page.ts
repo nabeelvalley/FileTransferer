@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
-import * as Mqtt from '../lib/browserMqtt'
-import * as mqtt from 'mqtt'
+import * as mqtt from '../lib/browserMqtt'
+import * as mqttTypes from 'mqtt'
+// import * as Buffer from '../lib/browserBuffer'
+import { Buffer } from 'buffer'
 
 @Component({
   selector: 'app-home',
@@ -9,13 +11,16 @@ import * as mqtt from 'mqtt'
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  client: mqtt.MqttClient;
+  client: mqttTypes.MqttClient;
   wifiIpAddress: string;
 
-  constructor(private networkInterface: NetworkInterface) {
-    this.networkInterface.getWiFiIPAddress().then((ip) => {
-      this.wifiIpAddress = ip;
-    })
+  constructor(
+    // private networkInterface: NetworkInterface
+  ) {
+    this.client = mqtt.connect('ws://192.168.0.113:1884')
+    // this.networkInterface.getWiFiIPAddress().then((ip) => {
+    //   this.wifiIpAddress = ip;
+    // })
   }
 
   ngOnInit() {
@@ -28,7 +33,25 @@ export class HomePage implements OnInit {
     })
   }
 
-  sendMessage(topic: string, message: string): void {
-    this.client.publish(topic, message);
+  sendMessage(topic: string, data: Buffer): void {
+    this.client.publish(topic, data);
+  }
+
+  handleFileSelect(event: any) {
+    var files = Array.from(event.target.files);
+
+    files.forEach((file: any) => {
+      console.log(file)
+      var reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = (e: any) => {
+        // The file's text will be printed here
+        const data = e.target.result;
+        console.log(data);
+        var buffer = Buffer.from(data)
+        this.sendMessage('file-transfer', buffer)
+      };
+
+    })
   }
 }

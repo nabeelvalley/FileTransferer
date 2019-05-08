@@ -9,5 +9,6 @@
 <ion-content>
   <div class="ion-padding">
     <ion-button (click)="sendMessage('file-transfer', 'Hello world')">Say Hi</ion-button>
+    <ion-input type="file" id="file-picker" name="file-picker" (change)="handleFileSelect($event)" multiple></ion-input>
   </div>
 </ion-content>
