@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Desktop",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/desktop",
+            "runtimeExecutable": "${workspaceRoot}/desktop/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceRoot}/desktop/node_modules/.bin/electron.cmd"
+            },
+            "args": [
+                "."
+            ],
+            "outputCapture": "std"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Debug Mobile",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "npm: start - mobile"
+        },
+    ]
+}
