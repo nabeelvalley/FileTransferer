@@ -1,20 +1,31 @@
 const mosca = require('mosca')
-const dns = require('dns')
+const getWifiIp = require('./getWifiIp')
 
-function broker(port) {
+function broker(mqttPort, httpPort) {
 
     const settings = {
-        port: port
+        port: mqttPort,
+        http: {
+            port: httpPort,
+            bundle: true,
+            static: './'
+        }
     }
 
     const server = new mosca.Server(settings)
 
-    server.on('ready', function () {
-        require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-            if (err) console.log(err)
-            const brokerURL = `mqtt://${add}:${port}`
-            console.log('MQTT Server Listening on', brokerURL)
-        })
+    server.on('ready', async () => {
+        const ip = getWifiIp()
+
+        const mqttURL = `mqtt://${ip}:${mqttPort}`
+        const httpURL = `ws://${ip}:${httpPort}`
+        console.log('MQTT Server Listening on', mqttURL)
+        console.log('HTTP Server listening on', httpURL)
+
+    })
+
+    server.on('clientConnected', (client) => {
+        console.log('client connected', client.id)
     })
 }
 

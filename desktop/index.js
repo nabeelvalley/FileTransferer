@@ -1,24 +1,23 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
-const dns = require('dns')
 
 const mqttBroker = require('./messaging/broker')
 const mqttSubscriber = require('./messaging/subscriber')
+const getWifiIp = require('./messaging/getWifiIp')
 
 let win
 let ipAddress
-let brokerPort = 1883
+let mqttPort = 1883
+let httpPort = 1884
 let channel = 'file-transfer'
 
 function startUp() {
     // Start the MQTT Broker
-    mqttBroker(brokerPort)
-    dns.lookup(require('os').hostname(), function (err, add, fam) {
-        ipAddress = add
-        mqttSubscriber(ipAddress, brokerPort, channel)
-    })
+    mqttBroker(mqttPort, httpPort)
 
+    ipAddress = getWifiIp()
+    mqttSubscriber(ipAddress, mqttPort, channel)
     // Create the browser window.
     win = new BrowserWindow({ width: 800, height: 600 })
 

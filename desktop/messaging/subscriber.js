@@ -9,9 +9,8 @@ function subscriber(ip, port, channel) {
     })
 
     client.on('message', function (topic, message) {
-        // const buffer = new Buffer(message)
         const buffer = Buffer.from(message)
-        console.log(buffer)
+        console.log(message.toString(), buffer)
     })
 }
 
