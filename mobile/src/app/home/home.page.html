@@ -10,5 +10,6 @@
   <div class="ion-padding">
     <ion-button (click)="sendMessage('file-transfer', 'Hello world')">Say Hi</ion-button>
     <ion-input type="file" id="file-picker" name="file-picker" (change)="handleFileSelect($event)" multiple></ion-input>
+    <h1>WiFI IP: {{wifiIpAddress}}</h1>
   </div>
 </ion-content>

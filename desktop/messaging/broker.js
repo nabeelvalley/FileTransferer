@@ -1,7 +1,9 @@
 const mosca = require('mosca')
 const getWifiIp = require('./getWifiIp')
+const publicIp = require('public-ip');
 
 function broker(mqttPort, httpPort) {
+    (async () => console.log('public ip', await publicIp.v4()))()
 
     const settings = {
         port: mqttPort,

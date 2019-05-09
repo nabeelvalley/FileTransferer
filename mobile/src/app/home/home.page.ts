@@ -15,12 +15,13 @@ export class HomePage implements OnInit {
   wifiIpAddress: string;
 
   constructor(
-    // private networkInterface: NetworkInterface
+    private networkInterface: NetworkInterface
   ) {
-    this.client = mqtt.connect('ws://192.168.0.113:1884')
-    // this.networkInterface.getWiFiIPAddress().then((ip) => {
-    //   this.wifiIpAddress = ip;
-    // })
+    this.networkInterface.getWiFiIPAddress()
+      .then((ip) => {
+        console.log(ip)
+        this.wifiIpAddress = ip.ip
+      })
   }
 
   ngOnInit() {
@@ -33,8 +34,17 @@ export class HomePage implements OnInit {
     })
   }
 
-  sendMessage(topic: string, data: Buffer): void {
-    this.client.publish(topic, data);
+  connectToBroker(ip: string) {
+    this.client = mqtt.connect('ws://192.168.0.113:1884')
+  }
+
+  // sendMessage(topic: string, data: Buffer): void {
+  //   this.client.publish(topic, data);
+  // }
+
+  sendMessage(topic: string, message: any): void {
+    const messageString = JSON.stringify(message)
+    this.client.publish(topic, Buffer.from(messageString));
   }
 
   handleFileSelect(event: any) {
@@ -49,7 +59,9 @@ export class HomePage implements OnInit {
         const data = e.target.result;
         console.log(data);
         var buffer = Buffer.from(data)
-        this.sendMessage('file-transfer', buffer)
+
+        const message = { name: file.name, data: buffer, encoding: 'buffer' }
+        this.sendMessage('file-transfer', message)
       };
 
     })
