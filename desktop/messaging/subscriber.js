@@ -10,10 +10,11 @@ function subscriber(ip, port, channel) {
         client.subscribe(channel)
     })
 
-    client.on('message', function (topic, message) {
-        const buffer = Buffer.from(message)
+    client.on('message', function (topic, context) {
+        const message = JSON.parse(context.toString())
+        const buffer = Buffer.from(message.data)
+        const fileName = message.name
         console.log(buffer)
-        var fileName = 'testFile.jpg'
         fileSaver(topic, fileName, buffer)
     })
 }
